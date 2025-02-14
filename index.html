@@ -123,6 +123,13 @@
         <hr class="divider">
     </section>
 
+    <section>
+        <h2>Demo Showcase 2</h2>
+        <!-- 视频展示区域 -->
+        <div id="video-showcase"></div>
+        <hr class="divider">
+    </section>
+
     <script>
         // name2topic 映射
         const name2topic = {
@@ -195,9 +202,73 @@
                 demoContent.appendChild(table);
             }
         }
+        // 添加新的视频展示数据
+        const videoTopics = {
+            "common-sense-35": "Why might someone prefer to shop at a small, locally-owned business instead of a large chain store, even if the prices are higher?",
+            "Counterfactual-59": "What if Christopher Columbus had not discovered the Americas?",
+            "Generic-7": "How can I develop my critical thinking skills?",
+            "Knowledge-13": "How can governments utilize fiscal and monetary policies to combat economic recessions?",
+            "zh-social-1": "社交媒体对人际关系的影响"
+        };
+
+        function generateVideoShowcase() {
+            const videoShowcase = document.getElementById("video-showcase");
+            
+            for (const [fileName, topic] of Object.entries(videoTopics)) {
+                const wrapper = document.createElement("div");
+                wrapper.className = "video-wrapper";
+                
+                // 创建话题标题
+                const topicTitle = document.createElement("div");
+                topicTitle.className = "topic-title";
+                topicTitle.textContent = `Topic: ${topic}`;
+                wrapper.appendChild(topicTitle);
+                
+                // 创建视频元素
+                const video = document.createElement("video");
+                video.controls = true;
+                video.style.width = "100%";
+                video.style.maxWidth = "800px";
+                video.style.marginTop = "10px";
+                video.style.marginBottom = "30px";
+                
+                // 设置视频源
+                const source = document.createElement("source");
+                source.src = `video/${fileName}.mp4`;
+                source.type = "video/mp4";
+                
+                video.appendChild(source);
+                wrapper.appendChild(video);
+                
+                // 添加到展示区域
+                videoShowcase.appendChild(wrapper);
+            }
+        }
+
+        // 添加新的样式
+        const style = document.createElement('style');
+        style.textContent = `
+            .video-wrapper {
+                margin: 30px 0;
+                padding: 20px;
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            
+            video {
+                border-radius: 4px;
+            }
+            
+            video::-webkit-media-controls {
+                background-color: rgba(0,0,0,0.1);
+            }
+        `;
+        document.head.appendChild(style);
         
         // 调用函数生成表格
         generateTables();
+        generateVideoShowcase();
     </script>
 </body>
 </html>
