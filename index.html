@@ -143,7 +143,7 @@
                     throw new Error('File not found');
                 }
                 const content = await response.text();
-                return content.trim();
+                return content.trim().replace(/\n/g, '<br>');
             } catch (error) {
                 return "File not found";
             }
