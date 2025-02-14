@@ -1,0 +1,4 @@
+Generic-7   How can I develop my critical thinking skills?
+Knowledge-18    How do social media platforms influence the way people consume and share news, and what are the potential implications for the spread of misinformation?
+Counterfactual-60   What if Vincent van Gogh had been a successful artist during his lifetime?
+common-sense-38 How can observing the behavior of other people in a social situation provide clues about cultural norms and expectations?
