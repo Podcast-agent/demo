@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper Title</title>
+    <style>
+        body {
+            font-family: "Georgia", serif;
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f0ed;
+            color: #4a4a4a;
+        }
+
+        header {
+            background-color: #6c757d;
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        section {
+            max-width: 1024px;
+            margin: 20px auto;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        section h2 {
+            font-size: 2rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: #5a5a5a;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #4a4a4a;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid #d3d0cb;
+            margin: 30px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th, table td {
+            border: 1px solid #e0dcd7;
+            padding: 15px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        table th {
+            background-color: #8c8c88;
+            color: white;
+            font-weight: bold;
+        }
+
+        table td {
+            background-color: #f9f7f6;
+        }
+
+        .scrollable {
+            max-height: 150px;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f8f6f4;
+        }
+
+        .topic-title {
+            font-size: 1.2rem; /* 减小字号 */
+            font-weight: bold;
+            margin-top: 20px;
+            color: #333333; /* 深灰色 */
+        }
+
+        .category {
+            font-size: 1rem; /* 更小的字号 */
+            color: #666666; /* 次要信息使用浅灰色 */
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Paper Title: A Comprehensive Study</h1>
+    </header>
+
+    <section>
+        <h2>Abstract</h2>
+        <p>
+            This paper explores advanced methodologies for analyzing and synthesizing audio content 
+            using state-of-the-art AI models. It introduces novel frameworks and evaluates their 
+            performance across various domains including conversational AI, podcast analysis, and 
+            content generation.
+        </p>
+        <hr class="divider">
+    </section>
+
+    <section>
+        <h2>Demo Showcase</h2>
+
+        <!-- JavaScript 动态生成表格 -->
+        <div id="demo-content"></div>
+
+        <hr class="divider">
+    </section>
+
+    <script>
+        // name2topic 映射
+        const name2topic = {
+            "Generic-7": "How can I develop my critical thinking skills?",
+            "Knowledge-18": "How do social media platforms influence the way people consume and share news, and what are the potential implications for the spread of misinformation?"
+            "Counterfactual-60": "What if Vincent van Gogh had been a successful artist during his lifetime?",
+            "common-sense-38": "How can observing the behavior of other people in a social situation provide clues about cultural norms and expectations?"
+        };
+
+        // 文件夹名称
+        const folders = ["WavJourney", "GPT-4", "PodcastAgent_Single", "PodcastAgent"];
+
+        // 从文件读取内容的函数
+        async function readFileContent(folder, fileName) {
+            try {
+                const response = await fetch(`${folder}/${fileName}.txt`);
+                if (!response.ok) {
+                    throw new Error('File not found');
+                }
+                const content = await response.text();
+                return content.trim();
+            } catch (error) {
+                return "File not found";
+            }
+        }
+
+        // 动态生成表格内容
+        async function generateTables() {
+            const demoContent = document.getElementById("demo-content");
+        
+            for (const [fileName, topic] of Object.entries(name2topic)) {
+                // 提取 Category
+                const category = fileName.split("-")[0];
+        
+                // 创建 Category 和 Topic 标题
+                const categoryTitle = document.createElement("div");
+                categoryTitle.className = "category";
+                categoryTitle.textContent = `Category: ${category}`;
+                demoContent.appendChild(categoryTitle);
+        
+                const topicTitle = document.createElement("div");
+                topicTitle.className = "topic-title";
+                topicTitle.textContent = `Topic: ${topic}`;
+                demoContent.appendChild(topicTitle);
+        
+                // 表格结构
+                const table = document.createElement("table");
+                table.innerHTML = `
+                    <thead>
+                        <tr>
+                            <th>WavJourney</th>
+                            <th>GPT-4</th>
+                            <th>PodcastAgent_Single</th>
+                            <th>PodcastAgent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            ${(await Promise.all(folders.map(async folder => {
+                                const content = await readFileContent(folder, fileName);
+                                return `
+                                    <td>
+                                        <div class="scrollable">${content}</div>
+                                    </td>
+                                `;
+                            }))).join("")}
+                        </tr>
+                    </tbody>
+                `;
+                demoContent.appendChild(table);
+            }
+        }
+        
+        // 调用函数生成表格
+        generateTables();
+    </script>
+</body>
+</html>
